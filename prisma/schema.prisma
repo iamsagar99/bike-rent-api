@@ -1,0 +1,24 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:sagarpass@localhost:5432/bikerent?schema=public"
+}
+
+
+
+model User {
+  id        Int   @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String[]   @default(["user"])
+  phone     String?
+  user_type String[] @default(["customer"])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
