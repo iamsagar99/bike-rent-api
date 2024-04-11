@@ -8,14 +8,9 @@ class UserController {
     }
     
     addUser = async(req, res, next) =>{
-        const { name, email, password, role, phone, user_type } = req.body;
+        const data = req.body;
 
-        const validationErrors = this.auth_svc.registerValidate({
-            name,
-            email,
-            password,
-            phone,
-        });
+        const validationErrors = this.auth_svc.registerValidate(data);
 
         if (validationErrors) {
             next({
@@ -25,10 +20,9 @@ class UserController {
         }
 
         try {
-
             const finduser = await prisma.user.findUnique({
                 where:{
-                    email:email
+                    email:data.email
                 }
             });
 
@@ -41,23 +35,16 @@ class UserController {
 
 
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password, salt);
-
+            data.password = await bcrypt.hash(password, salt);
+            console.log(data)
             const user = await prisma.user.create({
-                data: {
-                    name,
-                    email,
-                    password: hashedPassword, // Replace with actual password hashing logic
-                    role,
-                    phone,
-                    user_type,
-                },
+                data
             });
 
             res.json({
                 result: user, // Return the created user object
                 msg: 'User registered successfully',
-                status: 201,
+                status: true,
             });
         } catch (error) {
             console.error('Error creating user:', error);
@@ -69,20 +56,14 @@ class UserController {
     }
 
     updateUserById = async(req,res,next)=>{
-        const { name, email, password, role, phone, user_type } = req.body;
+        const { name, email, password, role, phone, user_type, locationId, status} = req.body;
         const { id } = req.params;
 
-        const validationErrors = this.auth_svc.registerValidate({
-            name,
-            email,
-            password,
-            phone,
-        }, true);
 
-        if (validationErrors) {
+        if (!email) {
             next({
                 status: 400,
-                msg: validation
+                msg: "Email is required."
             }) 
         }
 
@@ -100,7 +81,7 @@ class UserController {
                 });
             }
             // Checking if user wants to update passowrd
-            if(password.length >0){
+            if(password?.length >0){
                 const salt = await bcrypt.genSalt(10);
                 password = await bcrypt.hash(password, salt);
             }
@@ -116,6 +97,8 @@ class UserController {
                     role,
                     phone,
                     user_type,
+                    locationId,
+                    status
                 },
             });
 

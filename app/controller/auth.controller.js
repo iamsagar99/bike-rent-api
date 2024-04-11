@@ -11,13 +11,14 @@ class AuthController {
 
 
     register = async (req, res, next) => {
-        const { name, email, password, role, phone, user_type } = req.body;
+        const { name, email, password, role, phone, user_type,locationId,status } = req.body;
 
         const validationErrors = this.auth_svc.registerValidate({
             name,
             email,
             password,
             phone,
+            locationId
         });
 
         if (validationErrors) {
@@ -54,6 +55,8 @@ class AuthController {
                     role,
                     phone,
                     user_type,
+                    locationId,
+                    status
                 },
             });
 
