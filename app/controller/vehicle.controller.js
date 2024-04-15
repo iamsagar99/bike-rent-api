@@ -16,7 +16,7 @@ class VehicleController {
             data.rent_price = parseInt(data.rent_price);
             data.ownerId = parseInt(data.ownerId)
             data.locationId = parseInt(data.locationId)
-
+            data.milage = parseInt(data.milage)
 
 
 

@@ -33,6 +33,7 @@ model Vehicle {
   availability   Boolean    @default(true)
   images         String[]
   status         String?    @default("active")
+  milage          Int
   feedback       FeedBack[]
   feedback_count Int        @default(0)
   //owner of vehicle generally shop owner
@@ -72,14 +73,16 @@ model Booking {
   status         String?        @default("active")
   booking_date   DateTime
   return_date    DateTime
-  total_payment  Int
+  total_payment  Float
   image          String
   payment_status PaymentStatus? @default(PENDING)
   location       Location       @relation(fields: [locationId], references: [id])
   locationId     Int
   feedback       FeedBack[]
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  updatedAt    DateTime       @updatedAt
+  discount      Float            @default(0)
+  price_after_discount Float
 }
 
 model FeedBack {

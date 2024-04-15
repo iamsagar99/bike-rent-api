@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const BookingController = require("../app/controller/booking.routes");
+const BookingController = require("../app/controller/booking.controller.js");
 const loginCheck = require("../app/middleware/auth.middleware");
 const { isAdmin,isAdminOrSelf } = require("../app/middleware/rbac.middleware");
 const uploader = require('../app/middleware/file-upload.middleware')
@@ -20,7 +20,10 @@ router.post("/add",
 
 router.get('/',bk_ctrl.getBookingsByFilter)
 router.get('/all',bk_ctrl.getAllBookings)
-router.put('/:id',bk_ctrl.updateBookingById)
+router.put('/:bookingId',
+        setDestination,
+        uploader.single('image'),
+bk_ctrl.updateBookingById)
 
 
 

@@ -9,11 +9,6 @@ class AuthService{
         }else{
             delete errors['email']
         }
-        if(!data.locationId){
-            errors['location']='Location is required';
-        }else{
-            delete errors['location']
-        }
         if(!data.password){
             errors['passowrd']='Password is required';
         }else{
